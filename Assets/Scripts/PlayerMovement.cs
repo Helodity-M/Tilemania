@@ -19,11 +19,19 @@ public class PlayerMovement : MonoBehaviour
     void FixedUpdate()
     {
         Run();
+        UpdateAnimation();
     }
     void Run()
     {
         rb2d.linearVelocityX = moveInput.x * moveSpeed;
+    }
+
+
+    void UpdateAnimation()
+    {
         animator.SetBool("IsRunning", moveInput.x != 0);
+        if(moveInput.x != 0) //Only flip if moving
+            transform.localScale = new Vector3(Mathf.Sign(moveInput.x),1,1);
     }
     void OnMove(InputValue value)
     {

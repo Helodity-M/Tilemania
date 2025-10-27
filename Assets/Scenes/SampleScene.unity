@@ -198,7 +198,7 @@ TilemapRenderer:
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 1
+  m_SortingOrder: -1
   m_ChunkSize: {x: 32, y: 32, z: 32}
   m_ChunkCullingBounds: {x: 0, y: 0, z: 0}
   m_MaxChunkCount: 16
@@ -15795,6 +15795,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 99b11fc8abbdc104684192d7e0b315d9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerMovement
+  moveSpeed: 4
 --- !u!114 &1407569995
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15833,6 +15834,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 3525496411340662254, guid: 109128eba67b8344494e12c33338241c, type: 3}
+      propertyPath: m_Constraints
+      value: 4
+      objectReference: {fileID: 0}
     - target: {fileID: 6408836443544437696, guid: 109128eba67b8344494e12c33338241c, type: 3}
       propertyPath: m_Name
       value: Player

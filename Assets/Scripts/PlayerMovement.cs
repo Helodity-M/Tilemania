@@ -12,6 +12,10 @@ public class PlayerMovement : MonoBehaviour
 
     [SerializeField] float moveSpeed;
     [SerializeField] float jumpForce;
+
+    [SerializeField] LayerMask JumpableLayers;
+    [SerializeField] LayerMask ClimbableLayers;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -36,7 +40,7 @@ public class PlayerMovement : MonoBehaviour
     void UpdateAnimation()
     {
         animator.SetBool("IsRunning", moveInput.x != 0);
-        animator.SetBool("IsClimbing", collider.IsTouchingLayers(LayerMask.GetMask("Climbable")));
+        animator.SetBool("IsClimbing", collider.IsTouchingLayers(ClimbableLayers));
         if(moveInput.x != 0) //Only flip if moving
             transform.localScale = new Vector3(Mathf.Sign(moveInput.x),1,1);
     }
@@ -44,7 +48,7 @@ public class PlayerMovement : MonoBehaviour
     void ClimbLadder()
     {
         //If we are on a ladder, include y movement.
-        if (collider.IsTouchingLayers(LayerMask.GetMask("Climbable")))
+        if (collider.IsTouchingLayers(ClimbableLayers))
         {
             rb2d.linearVelocityY = moveInput.y * moveSpeed;
             rb2d.gravityScale = 0;
@@ -61,9 +65,10 @@ public class PlayerMovement : MonoBehaviour
 
     void OnJump(InputValue value)
     {
+        Debug.Log(value.isPressed);
         if (value.isPressed)
         {
-            if(collider.IsTouchingLayers(LayerMask.GetMask("Ground")))
+            if(collider.IsTouchingLayers(JumpableLayers))
             {
                 rb2d.linearVelocityY = jumpForce;
             }
@@ -71,7 +76,7 @@ public class PlayerMovement : MonoBehaviour
         {
             if(rb2d.linearVelocityY > 0)
             {
-                rb2d.linearVelocityY *= 0.2f;
+                rb2d.linearVelocityY *= 0.5f;
             }
         }
     }

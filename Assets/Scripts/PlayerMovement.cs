@@ -6,7 +6,7 @@ public class PlayerMovement : MonoBehaviour
     Rigidbody2D rb2d;
     Vector2 moveInput;
     Animator animator;
-    Collider2D collider;
+    [SerializeField] Collider2D floorCollider;
 
     float baseGravityScale;
 
@@ -22,7 +22,6 @@ public class PlayerMovement : MonoBehaviour
         rb2d = GetComponent<Rigidbody2D>();
         baseGravityScale = rb2d.gravityScale;
         animator = GetComponent<Animator>();
-        collider = GetComponent<Collider2D>();
     }
 
     void FixedUpdate()
@@ -40,7 +39,7 @@ public class PlayerMovement : MonoBehaviour
     void UpdateAnimation()
     {
         animator.SetBool("IsRunning", moveInput.x != 0);
-        animator.SetBool("IsClimbing", collider.IsTouchingLayers(ClimbableLayers));
+        animator.SetBool("IsClimbing", floorCollider.IsTouchingLayers(ClimbableLayers));
         if(moveInput.x != 0) //Only flip if moving
             transform.localScale = new Vector3(Mathf.Sign(moveInput.x),1,1);
     }
@@ -48,7 +47,7 @@ public class PlayerMovement : MonoBehaviour
     void ClimbLadder()
     {
         //If we are on a ladder, include y movement.
-        if (collider.IsTouchingLayers(ClimbableLayers))
+        if (floorCollider.IsTouchingLayers(ClimbableLayers))
         {
             rb2d.linearVelocityY = moveInput.y * moveSpeed;
             rb2d.gravityScale = 0;
@@ -68,7 +67,7 @@ public class PlayerMovement : MonoBehaviour
         Debug.Log(value.isPressed);
         if (value.isPressed)
         {
-            if(collider.IsTouchingLayers(JumpableLayers))
+            if(floorCollider.IsTouchingLayers(JumpableLayers))
             {
                 rb2d.linearVelocityY = jumpForce;
             }

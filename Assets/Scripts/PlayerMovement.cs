@@ -104,6 +104,7 @@ public class PlayerMovement : MonoBehaviour
 
     void OnAttack(InputValue value)
     {
+        if (!isAlive) return;
         if (value.isPressed)
         {
             GameObject newbullet = Instantiate(Bullet, gunPos.position, Quaternion.identity);

@@ -6,6 +6,7 @@ public class PlayerMovement : MonoBehaviour
     Rigidbody2D rb2d;
     Vector2 moveInput;
     Animator animator;
+    SpriteRenderer spriteRenderer;
     [SerializeField] Collider2D bodyCollider;
     [SerializeField] Collider2D floorCollider;
 
@@ -26,6 +27,7 @@ public class PlayerMovement : MonoBehaviour
         rb2d = GetComponent<Rigidbody2D>();
         baseGravityScale = rb2d.gravityScale;
         animator = GetComponent<Animator>();
+        spriteRenderer = GetComponent<SpriteRenderer>();
     }
 
     void FixedUpdate()
@@ -68,6 +70,9 @@ public class PlayerMovement : MonoBehaviour
         if (bodyCollider.IsTouchingLayers(DeathLayers))
         {
             isAlive = false;
+            animator.SetTrigger("Dying");
+            rb2d.linearVelocityY += 30;
+            spriteRenderer.color = Color.red;
         }
     }
 

@@ -6,6 +6,7 @@ public class PlayerMovement : MonoBehaviour
     Rigidbody2D rb2d;
     Vector2 moveInput;
     Animator animator;
+    [SerializeField] Collider2D bodyCollider;
     [SerializeField] Collider2D floorCollider;
 
     float baseGravityScale;
@@ -15,6 +16,9 @@ public class PlayerMovement : MonoBehaviour
 
     [SerializeField] LayerMask JumpableLayers;
     [SerializeField] LayerMask ClimbableLayers;
+    [SerializeField] LayerMask DeathLayers;
+
+    bool isAlive = true;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -26,9 +30,11 @@ public class PlayerMovement : MonoBehaviour
 
     void FixedUpdate()
     {
+        if (!isAlive) return;
         Run();
         ClimbLadder();
         UpdateAnimation();
+        Die();
     }
     void Run()
     {
@@ -47,13 +53,21 @@ public class PlayerMovement : MonoBehaviour
     void ClimbLadder()
     {
         //If we are on a ladder, include y movement.
-        if (floorCollider.IsTouchingLayers(ClimbableLayers))
+        if (bodyCollider.IsTouchingLayers(ClimbableLayers))
         {
             rb2d.linearVelocityY = moveInput.y * moveSpeed;
             rb2d.gravityScale = 0;
         } else
         {
             rb2d.gravityScale = baseGravityScale;
+        }
+    }
+
+    void Die()
+    {
+        if (bodyCollider.IsTouchingLayers(DeathLayers))
+        {
+            isAlive = false;
         }
     }
 
@@ -64,7 +78,7 @@ public class PlayerMovement : MonoBehaviour
 
     void OnJump(InputValue value)
     {
-        Debug.Log(value.isPressed);
+        if (!isAlive) return;
         if (value.isPressed)
         {
             if(floorCollider.IsTouchingLayers(JumpableLayers))

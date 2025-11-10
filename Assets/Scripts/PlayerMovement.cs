@@ -10,6 +10,9 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] Collider2D bodyCollider;
     [SerializeField] Collider2D floorCollider;
 
+    [SerializeField] GameObject Bullet;
+    [SerializeField] Transform gunPos;
+
     float baseGravityScale;
 
     [SerializeField] float moveSpeed;
@@ -96,6 +99,15 @@ public class PlayerMovement : MonoBehaviour
             {
                 rb2d.linearVelocityY *= 0.5f;
             }
+        }
+    }
+
+    void OnAttack(InputValue value)
+    {
+        if (value.isPressed)
+        {
+            GameObject newbullet = Instantiate(Bullet, gunPos.position, Quaternion.identity);
+            newbullet.transform.localScale *= transform.localScale.x;
         }
     }
 }
